@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Stock-Stop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+
+<body class="bg-light">
+  <div class="container">
+    <div class="py-4 text-center">
+      <h2>Positionsgröße berechnen</h2>
+    </div>
+    <div class="row">
+      <form class="needs-validation" novalidate>
+        <div class="row">
+          <div class="mb-3">
+            <label for="tbLimit" class="form-label">Limit</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="tbLimit" placeholder="0.00" value="35.52" required>
+              <div class="input-group-append">
+                <span class="input-group-text">€</span>
+              </div>
+
+              <div class="invalid-feedback">
+                Valid limit is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="tbStop" class="form-label">Stop</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="tbStop" placeholder="0.00" value="32.5" required>
+              <div class="input-group-append">
+                <span class="input-group-text">€</span>
+              </div>
+
+              <div class="invalid-feedback">
+                Valid stop is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="tbMaxLoss" class="form-label">Max-Verlust</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="tbMaxLoss" placeholder="0.00" value="100">
+              <div class="input-group-append">
+                <span class="input-group-text">€</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Berechnen</button>
+        </div>
+        <hr class="mb-4">
+        <div class="row">
+          <div class="mb-3">
+            <label for="tbStockCount" class="form-label">Anzahl</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="tbStockCount" placeholder="0" value="" readonly>
+              <div class="input-group-append">
+                <span class="input-group-text">AKTIEN</span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="tbSum" class="form-label">Summe</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="tbSum" placeholder="0" value="" readonly>
+              <div class="input-group-append">
+                <span class="input-group-text">€</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+      'use strict';
+
+      window.addEventListener('load', function () {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            if (form.checkValidity() === false) {
+              event.stopPropagation();
+            }
+            else {
+              let limit = Number(document.getElementById('tbLimit').value);
+              let stop = Number(document.getElementById('tbStop').value);
+              let maxLoss = Number(document.getElementById('tbMaxLoss').value);
+
+              if (limit > 0 && stop >= 0 && maxLoss >= 0) {
+                let diff = limit - stop;
+                let stockCount = Math.floor(maxLoss / diff);
+                document.getElementById('tbStockCount').value = stockCount;
+                document.getElementById('tbSum').value = stockCount * limit;
+              }
+              return false;
+            }
+
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+  </script>
+</body>
+
+</html>
